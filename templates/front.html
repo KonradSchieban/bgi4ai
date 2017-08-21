@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% block content %}
+
+    {% for blog_entry in blog_entries %}
+        <div class="row blog-username">
+            <div class="col-md-12">
+                <h2>Author: {{ blog_entry.username }}</h2>
+            </div>
+        </div>
+
+        <div class="row blog-header">
+            <div class="col-md-6">
+                <h3><i>{{ blog_entry.subject }}</i></h3>
+            </div>
+            <div class="col-md-6 text-right">
+                <p class="blog_created_date">{{ blog_entry.created.strftime("%Y-%m-%d %H:%M:%S") }}</p>
+            </div>
+        </div>
+
+        <div class="row article_separator">
+            <div class="col-md-12">
+                <hr>
+            </div>
+        </div>
+
+        <div class="row blog-body">
+            <div class="col-md-12">
+                <pre class="blog-body">{{ blog_entry.text }}</pre>
+            </div>
+        </div>
+
+        <div class="row blog-likes">
+            <div class="col-md-8 col-sm-8 btn-group">
+                {% if user_id == blog_entry.user_id|string %}
+
+                <div class="btn">
+                    <form action="/blog/editPost" method="get">
+                        <button class="btn" name="post_id" value="{{ blog_entry.key().id() }}" type="submit">Edit</button>
+                        <input type="hidden" name="actionType" value="edit">
+                    </form>
+                </div>
+                <div class="btn">
+                    <form method="post">
+                        <button class="btn" name="post_id" value="{{ blog_entry.key().id() }}" type="submit">Delete</button>
+                        <input type="hidden" name="actionType" value="delete">
+                    </form>
+                </div>
+                <div class="btn">
+                    <form method="post">
+                        <button class="btn" name="like" value="1|{{blog_entry.key().id()}}" type="submit" disabled>Like</button>
+                        <input type="hidden" name="actionType" value="like">
+                    </form>
+                </div>
+                <div class="btn">
+                    <form method="post">
+                        <button class="btn" name="like" value="-1|{{blog_entry.key().id()}}" type="submit" disabled>Dislike</button>
+                        <input type="hidden" name="actionType" value="like">
+                    </form>
+                </div>
+
+                {% else %}
+
+                <div class="btn">
+                    <form action="/blog/NewPost" method="get">
+                        <button class="btn" name="post_id" value="{{ blog_entry.key().id() }}" type="submit" disabled>Edit</button>
+                        <input type="hidden" name="actionType" value="edit">
+                    </form>
+                </div>
+                <div class="btn">
+                    <form method="post">
+                        <button class="btn" name="post_id" value="{{ blog_entry.key().id() }}" type="submit" disabled>Delete</button>
+                        <input type="hidden" name="actionType" value="delete">
+                    </form>
+                </div>
+                <div class="btn">
+                    <form method="post">
+                        <button class="btn" name="like" value="1|{{blog_entry.key().id()}}" type="submit">Like</button>
+                        <input type="hidden" name="actionType" value="like">
+                    </form>
+                </div>
+                <div class="btn">
+                    <form method="post">
+                        <button class="btn" name="like" value="-1|{{blog_entry.key().id()}}" type="submit">Dislike</button>
+                        <input type="hidden" name="actionType" value="like">
+                    </form>
+                </div>
+
+                {% endif %}
+            </div>
+            <div class="col-md-4 col-sm-4">
+                <p class="blog-likes text-right">Likes: {{ blog_entry.likes }}</p>
+            </div>
+        </div>
+
+        <div class="row blog-err_msg">
+            <div class="col-md-12 col-sm-12">
+            {% if err_post_id == blog_entry.key().id()|string %}
+                {{ err_msg }}
+            {% endif %}
+            </div>
+        </div>
+
+        {% if user_id != blog_entry.user_id|string %}
+        <div class="row">
+            <div class="col-md-6 col-sm-6">
+
+            </div>
+            <div class="col-md-6 col-sm-6">
+                <form method="post">
+                    <textarea class="form-control" style="min-width: 100%; min-height: 100px" name="comment"></textarea>
+                    <input type="hidden" name="post_id" value="{{blog_entry.key().id()}}">
+                    <input type="hidden" name="actionType" value="create_comment">
+                    <div class="btn-group pull-right">
+                        <div class="btn">
+                            <button class="btn" type="submit" >Comment</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+
+        {% for comment in comments %}
+            {% if comment.post_id == blog_entry.key().id() %}
+                {% if user_id != comment.user_id|string %}
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 text-right">
+                            <h3>{{ comment.username }}, {{ comment.created.strftime("%Y-%m-%d %H:%M:%S") }}</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4">
+                        </div>
+                        <div class="col-md-8 col-sm-8">
+                            <pre class="comment-text">{{ comment.text }}</pre>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if user_id == comment.user_id|string %}
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 text-right">
+                            <h3>{{ comment.username }}, {{ comment.created.strftime("%Y-%m-%d %H:%M:%S") }}</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4">
+                        </div>
+                        <div class="col-md-8 col-sm-8 btn-group pull-right">
+                            <form method="post">
+                                <textarea class="form-control" style="min-width: 100%;" name="comment-text">{{ comment.text }}</textarea>
+                                <input type="hidden" name="post_id" value="{{blog_entry.key().id()}}">
+                                <input type="hidden" name="actionType" value="edit_comment">
+                                <button class="btn pull-right" name="comment_id" value="{{ comment.key().id() }}" type="submit">Edit</button>
+                            </form>
+                            <form method="post">
+                                <input type="hidden" name="post_id" value="{{blog_entry.key().id()}}">
+                                <input type="hidden" name="actionType" value="delete_comment">
+                                <button class="btn pull-right" name="comment_id" value="{{ comment.key().id() }}" type="submit">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+
+    {% endfor %}
+
+{% endblock %}

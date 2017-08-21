@@ -1,0 +1,118 @@
+
+body {
+    font-family: sans-serif;
+    padding: 10px;
+    display: block;
+    font-family: "Lato", sans-serif;
+    background-color: ghostwhite;
+    font-size: 16px;
+}
+
+.dropdown-menu > li > a {
+    font-size: 20px;
+}
+
+.navbar {
+    font-size: large;
+    font-weight: bold;
+}
+
+#main_image {
+    max-width:100%;
+    margin-top: -20px;
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -1px;
+}
+
+#main_title {
+    font-size: 72px;
+    margin-top: -320px;
+    margin-left: 20px;
+    color: white;
+    font-weight: bold;
+    width: 600px;
+}
+
+#main_subtitle {
+    font-size: 36px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    margin-left: 20px;
+    color: white;
+    font-weight: bold;
+    width: 800px;
+}
+
+h1 a{
+    color: inherit;
+}
+h3 {
+    font-size: 16px;
+}
+
+/*
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+*/
+
+hr {
+    margin: 20px auto;
+    margin-top: 0px;
+}
+
+.blog + .blog{
+    margin-top: 20px;
+}
+
+.blog-title {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.blog-body {
+    font-size: 14px;
+    margin: 0;
+}
+
+
+.blog-date {
+    text-align: right;
+}
+
+.article-separator {
+    border: none;
+    height: 1px;
+    /* Set the hr color */
+    color: #333; /* old IE */
+    background-color: #333; /* Modern Browsers */
+}
+
+.blog-err_msg {
+    color: red;
+ }
+
+.blog-likes {
+    padding-right: 20px;
+}
+
+.error {
+    color: red;
+}
+
+.blog_created_date {
+    margin-top: 30px;
+}
+
+.footer-separator {
+    margin-top: 20px;
+}
